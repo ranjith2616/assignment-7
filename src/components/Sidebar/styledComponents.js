@@ -10,10 +10,11 @@ import {RiMenuAddFill} from 'react-icons/ri'
 
 export const SidebarContainer = styled.div`
   width: 40vh;
-  height: 100vh;
-
+  height: 88vh;
+  margin-right: auto;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 
   @media screen and (max-width: 767px) {
     display: none;
@@ -46,3 +47,16 @@ export const TrendIcon = styled(AiFillFire)``
 export const GameIcon = styled(SiYoutubegaming)``
 
 export const SaveIcon = styled(RiMenuAddFill)``
+
+export const ContactUsContainer = styled.div`
+  padding: 10px;
+`
+export const ContactUsHeading = styled.h1`
+  font-size: 16px;
+  color: #1e293b;
+`
+export const CompanyLogoImages = styled.img`
+  height: 35px;
+  padding-top: 8px;
+  padding-right: 8px;
+`

@@ -10,7 +10,7 @@ import styled from 'styled-components'
 
 export const HeaderContainer = styled.div`
   height: 12vh;
-  border: 2px solid red;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -48,7 +48,7 @@ export const LogoutButton = styled.button`
   cursor: pointer;
   border-radius: 5px;
   height: 26px;
-  width: 40%;
+  width: 10vh;
 
   @media screen and (max-width: 767px) {
     color: #000;

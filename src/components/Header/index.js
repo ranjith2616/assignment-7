@@ -1,5 +1,7 @@
 import {Component} from 'react'
 
+import Popup from 'reactjs-popup'
+
 import Cookies from 'js-cookie'
 import {withRouter} from 'react-router-dom'
 
@@ -25,6 +27,29 @@ class Header extends Component {
     history.replace('/login')
   }
 
+  renderLogoutPopup = () => (
+    <div>
+      <Popup modal trigger={<LogoutButton type="button">Logout</LogoutButton>}>
+        {close => (
+          <>
+            <div>
+              <p> Are you sure, you want to logout</p>
+            </div>
+
+            <button type="button" onClick={() => close()}>
+              {' '}
+              Cancel
+            </button>
+            <button type="button" onClick={this.onLogOutButton()}>
+              {' '}
+              Confirm
+            </button>
+          </>
+        )}
+      </Popup>
+    </div>
+  )
+
   render() {
     return (
       <>
@@ -46,10 +71,7 @@ class Header extends Component {
               alt="profile"
             />
 
-            <LogoutButton type="button" onClick={this.onLogOutButton}>
-              {' '}
-              Logout
-            </LogoutButton>
+            {this.renderLogoutPopup()}
           </DesktopFeatureContainer>
 
           <MobileFeaturesContainer>

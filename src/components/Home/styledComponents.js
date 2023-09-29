@@ -6,12 +6,11 @@ export const HomeContainer = styled.div`
   display: flex;
 `
 export const ResponsiveContainer = styled.div`
-  background-color: #f1f5f9;
-  height: auto;
+  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f9f9f9')};
   background-size: cover;
   width: 100%;
-  min-height: 100vh;
-  max-height: auto;
+  height: 100vh;
+  overflow: auto;
 `
 export const BannerContainer = styled.div`
   background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
@@ -72,7 +71,7 @@ export const LoadingContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 50vh;
+  margin-top: 30vh;
 `
 export const NoVideosImage = styled.img`
   height: 40vh;

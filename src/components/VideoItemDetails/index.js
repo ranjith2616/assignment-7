@@ -1,20 +1,19 @@
 import {Component} from 'react'
-import Cookies from 'js-cookie'
 import Loader from 'react-loader-spinner'
+
+import Cookies from 'js-cookie'
+
+import VideoItem from '../VideoItem'
+
+import {
+  VideoItemDetailsContainer,
+  ResponsiveContainer,
+  LoadingContainer,
+  FailureImage,
+} from './styledComponents'
 
 import Header from '../Header'
 import Sidebar from '../Sidebar'
-import TrendingDetailedItem from '../TrendingDetailedItem'
-
-import {
-  TrendingContainer,
-  ResponsiveContainer,
-  TrendingVideosListContainer,
-  TrendIcon,
-  TrendBannerCard,
-  TrendingHeading,
-  LoadingContainer,
-} from './styledComponents'
 
 const apiStatusConst = {
   initial: 'INITIAL',
@@ -23,18 +22,23 @@ const apiStatusConst = {
   inProgress: 'INPROGRESS',
 }
 
-class Trending extends Component {
-  state = {apiStatus: apiStatusConst.initial, data: []}
-
-  componentDidMount() {
-    this.getTrendingVideos()
+class VideoItemDetails extends Component {
+  state = {
+    videoData: [],
+    apiStatus: apiStatusConst.initial,
   }
 
-  getTrendingVideos = async () => {
+  componentDidMount() {
+    this.getVideoDetails()
+  }
+
+  getVideoDetails = async () => {
     this.setState({apiStatus: apiStatusConst.inProgress})
+    const {match} = this.props
+    const {params} = match
+    const {id} = params
 
-    const url = 'https://apis.ccbp.in/videos/trending'
-
+    const url = `https://apis.ccbp.in/videos/${id}`
     const token = Cookies.get('jwt_token')
 
     const options = {
@@ -48,61 +52,54 @@ class Trending extends Component {
     const data = await response.json()
 
     if (response.ok) {
-      console.log(data)
+      const updateData = {
+        id: data.video_details.id,
+        description: data.video_details.description,
+        publishedAt: data.video_details.published_at,
+        thumbnailUrl: data.video_details.thumbnail_url,
+        title: data.video_details.title,
+        videoUrl: data.video_details.video_url,
+        viewCount: data.video_details.view_count,
+        channelName: data.video_details.channel.name,
+        profileImageUrl: data.video_details.channel.profile_image_url,
+        subscriberCount: data.video_details.channel.subscriber_count,
+      }
 
-      const updatedData = data.videos.map(each => ({
-        id: each.id,
-        publishedAt: each.published_at,
-        thumbnailUrl: each.thumbnail_url,
-        title: each.title,
-        viewsCount: each.view_count,
-        channelName: each.channel.name,
-        profileImageUrl: each.channel.profile_image_url,
-      }))
-
-      this.setState({apiStatus: apiStatusConst.success, data: updatedData})
+      this.setState({videoData: updateData, apiStatus: apiStatusConst.success})
     } else {
       this.setState({apiStatus: apiStatusConst.failure})
     }
   }
 
+  onRetryButton = () => {
+    this.getVideoDetails()
+  }
+
   renderSuccessView = () => {
-    const {data} = this.state
+    const {videoData} = this.state
 
     return (
-      <div>
-        <TrendBannerCard data-testid="banner">
-          <TrendIcon />
-          <TrendingHeading> Trending</TrendingHeading>
-        </TrendBannerCard>
-        <TrendingVideosListContainer>
-          {data.map(each => (
-            <TrendingDetailedItem key={each.id} trendingDetails={each} />
-          ))}
-        </TrendingVideosListContainer>
-      </div>
+      <>
+        <VideoItem videoDetails={videoData} />
+      </>
     )
   }
 
-  renderInprogressView = () => (
-    <LoadingContainer className="loader-container" data-testid="loader">
+  renderInProgressView = () => (
+    <LoadingContainer data-testid="loader">
       <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
     </LoadingContainer>
   )
 
-  onRetryButton = () => {
-    this.getTrendingVideos()
-  }
-
   renderFailureView = () => (
     <div>
-      <img
+      <FailureImage
         src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
         alt="failure view"
       />
-
       <h1> Oops! Something Went Wrong</h1>
       <p>
+        {' '}
         We are having some trouble to complete your request. Please try again.
       </p>
       <button type="button" onClick={this.onRetryButton}>
@@ -112,14 +109,14 @@ class Trending extends Component {
     </div>
   )
 
-  renderTrendingRoute = () => {
+  renderVideoItemDetailRoute = () => {
     const {apiStatus} = this.state
 
     switch (apiStatus) {
       case apiStatusConst.success:
         return this.renderSuccessView()
       case apiStatusConst.inProgress:
-        return this.renderInprogressView()
+        return this.renderInProgressView()
       case apiStatusConst.failure:
         return this.renderFailureView()
       default:
@@ -131,15 +128,15 @@ class Trending extends Component {
     return (
       <>
         <Header />
-        <TrendingContainer>
+        <VideoItemDetailsContainer>
           <Sidebar />
-          <ResponsiveContainer data-testid="trending">
-            {this.renderTrendingRoute()}
+          <ResponsiveContainer data-testid="videoItemDetails">
+            {this.renderVideoItemDetailRoute()}
           </ResponsiveContainer>
-        </TrendingContainer>
+        </VideoItemDetailsContainer>
       </>
     )
   }
 }
 
-export default Trending
+export default VideoItemDetails

@@ -26,24 +26,26 @@ const HomeDetailedVideoItem = props => {
 
   return (
     <LinkDetailedVideo to={`/videos/${id}`}>
-      <ThumbnailImage src={thumbnailUrl} alt="video thumbnail" />
-      <VideoDetailsContainer>
-        <ChanelLogo src={profileImageUrl} alt="channel logo" />
+      <li>
+        <ThumbnailImage src={thumbnailUrl} alt="video thumbnail" />
+        <VideoDetailsContainer>
+          <ChanelLogo src={profileImageUrl} alt="channel logo" />
 
-        <div>
-          <VideoHeading> {title}</VideoHeading>
-          <p> {channelName}</p>
+          <div>
+            <VideoHeading> {title}</VideoHeading>
+            <p> {channelName}</p>
 
-          <ViewsCard>
-            <p> {viewsCount}</p>
-            <p>
-              {' '}
-              <DotIcon />
-              {published}
-            </p>
-          </ViewsCard>
-        </div>
-      </VideoDetailsContainer>
+            <ViewsCard>
+              <p> {viewsCount}</p>
+              <p>
+                {' '}
+                <DotIcon />
+                {published}
+              </p>
+            </ViewsCard>
+          </div>
+        </VideoDetailsContainer>
+      </li>
     </LinkDetailedVideo>
   )
 }

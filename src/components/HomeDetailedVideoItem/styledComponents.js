@@ -11,7 +11,7 @@ export const LinkDetailedVideo = styled(Link)`
   border-radius: 8px;
   height: 40vh;
   padding: 8px;
-  width: 50vh;
+  width: 46vh;
   font-family: 'Roboto';
 
   display:flex;

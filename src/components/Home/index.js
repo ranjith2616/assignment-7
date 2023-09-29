@@ -3,6 +3,8 @@ import Cookies from 'js-cookie'
 
 import Loader from 'react-loader-spinner'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import Header from '../Header'
 import Sidebar from '../Sidebar'
 import HomeDetailedVideoItem from '../HomeDetailedVideoItem'
@@ -86,7 +88,11 @@ class Home extends Component {
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
           alt="nxt watch logo"
         />
-        <BannerCloseButton type="button" onClick={this.BannerCancelBtn}>
+        <BannerCloseButton
+          data-testid="close"
+          type="button"
+          onClick={this.BannerCancelBtn}
+        >
           <BannerCancelIcon />
         </BannerCloseButton>
       </BannerTopCard>
@@ -168,7 +174,7 @@ class Home extends Component {
         src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
         alt="failure view"
       />
-      <p> Fail</p>
+
       <h1> Oops! Something Went Wrong</h1>
       <p>
         We are having some trouble to complete your request. Please try again.
@@ -202,7 +208,7 @@ class Home extends Component {
         <Header />
         <HomeContainer>
           <Sidebar />
-          <ResponsiveContainer>
+          <ResponsiveContainer data-testid="home">
             {showBanner && this.renderBannerSection()}
 
             {this.renderHomeRoute()}

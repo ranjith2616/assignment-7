@@ -9,6 +9,9 @@ import {
   GameIcon,
   SaveIcon,
   LinkContainer,
+  ContactUsContainer,
+  CompanyLogoImages,
+  ContactUsHeading,
 } from './styledComponents'
 
 class Sidebar extends Component {
@@ -32,6 +35,28 @@ class Sidebar extends Component {
             <SaveIcon /> Saved videos
           </RouteLink>
         </LinkContainer>
+
+        <ContactUsContainer>
+          <ContactUsHeading> CONTACT US</ContactUsHeading>
+          <div>
+            <CompanyLogoImages
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+              alt="facebook logo"
+            />
+
+            <CompanyLogoImages
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+              alt="linked in logo"
+            />
+
+            <CompanyLogoImages
+              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+              alt="twitter logo"
+            />
+          </div>
+
+          <p> Enjoy! Now to see your channels and recommendations!</p>
+        </ContactUsContainer>
       </SidebarContainer>
     )
   }

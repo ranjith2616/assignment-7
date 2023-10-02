@@ -1,5 +1,4 @@
-import {Component} from 'react'
-import {withRouter} from 'react-router-dom'
+import NxtWatchContext from '../../context/NxtWatchContext'
 
 import {
   SidebarContainer,
@@ -14,52 +13,58 @@ import {
   ContactUsHeading,
 } from './styledComponents'
 
-class Sidebar extends Component {
-  render() {
-    return (
-      <SidebarContainer>
-        <LinkContainer>
-          <RouteLink to="/">
-            <HomeIcon /> Home
-          </RouteLink>
+const Sidebar = () => (
+  <NxtWatchContext.Consumer>
+    {value => {
+      const {isDark} = value
+      return (
+        <SidebarContainer dark={isDark.toString()}>
+          <LinkContainer>
+            <RouteLink to="/" dark={isDark.toString()}>
+              <HomeIcon /> Home
+            </RouteLink>
 
-          <RouteLink to="/trending">
-            <TrendIcon /> Trending
-          </RouteLink>
+            <RouteLink to="/trending" dark={isDark.toString()}>
+              <TrendIcon /> Trending
+            </RouteLink>
 
-          <RouteLink to="/gaming">
-            <GameIcon /> Gaming
-          </RouteLink>
+            <RouteLink to="/gaming" dark={isDark.toString()}>
+              <GameIcon /> Gaming
+            </RouteLink>
 
-          <RouteLink to="/saved-videos">
-            <SaveIcon /> Saved videos
-          </RouteLink>
-        </LinkContainer>
+            <RouteLink to="/saved-videos" dark={isDark.toString()}>
+              <SaveIcon /> Saved videos
+            </RouteLink>
+          </LinkContainer>
 
-        <ContactUsContainer>
-          <ContactUsHeading> CONTACT US</ContactUsHeading>
-          <div>
-            <CompanyLogoImages
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
-              alt="facebook logo"
-            />
+          <ContactUsContainer>
+            <ContactUsHeading dark={isDark.toString()}>
+              {' '}
+              CONTACT US
+            </ContactUsHeading>
+            <div>
+              <CompanyLogoImages
+                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-facebook-logo-img.png"
+                alt="facebook logo"
+              />
 
-            <CompanyLogoImages
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
-              alt="linked in logo"
-            />
+              <CompanyLogoImages
+                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-linked-in-logo-img.png"
+                alt="linked in logo"
+              />
 
-            <CompanyLogoImages
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
-              alt="twitter logo"
-            />
-          </div>
+              <CompanyLogoImages
+                src="https://assets.ccbp.in/frontend/react-js/nxt-watch-twitter-logo-img.png"
+                alt="twitter logo"
+              />
+            </div>
 
-          <p> Enjoy! Now to see your channels and recommendations!</p>
-        </ContactUsContainer>
-      </SidebarContainer>
-    )
-  }
-}
+            <p> Enjoy! Now to see your channels and recommendations!</p>
+          </ContactUsContainer>
+        </SidebarContainer>
+      )
+    }}
+  </NxtWatchContext.Consumer>
+)
 
-export default withRouter(Sidebar)
+export default Sidebar

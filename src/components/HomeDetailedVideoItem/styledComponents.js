@@ -6,7 +6,7 @@ import {BsDot} from 'react-icons/bs'
 
 export const LinkDetailedVideo = styled(Link)`
   text-decoration:none;
-  color:#000;
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#101010')};
   margin: 16px;
   border-radius: 8px;
   height: 40vh;
@@ -34,7 +34,7 @@ export const ChanelLogo = styled.img`
   height: 50px;
   padding: 10px;
 `
-export const VideoHeading = styled.h1`
+export const VideoHeading = styled.p`
   font-size: 14px;
   font-weight: 500;
 `

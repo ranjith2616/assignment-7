@@ -8,7 +8,7 @@ export const LinkGamingItem = styled(Link)`
   width: 30vh;
   height: 40vh;
   text-decoration: none;
-  color: #000;
+  color: ${props => (props.dark === 'true' ? '#fff' : '#000')};
   @media screen and (max-width: 767px) {
     width: 25vh;
   }

@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 
-import ReactPlayer from 'react-player'
-
 import {AiOutlineLike, AiOutlineDislike} from 'react-icons/ai'
 import {RiMenuAddLine} from 'react-icons/ri'
+
+import ReactPlayer from 'react-player'
 
 export const ResponsivePlayer = styled(ReactPlayer)``
 
@@ -11,8 +11,10 @@ export const VideoItemContainer = styled.div`
   padding: 20px;
   width: 680px;
   padding: 10px;
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#000')};
   @media screen and (max-width: 767px) {
     width: 100%;
+    height: 100%;
   }
 `
 export const VideoTitleHeading = styled.h1`
@@ -48,7 +50,7 @@ export const IconButton = styled.button`
   outline: none;
   font-size: 16px;
 
-  background-color: ${props => (props.save ? 'red' : null)}
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#000')};
 
   display: flex;
   align-items: center;
@@ -75,7 +77,16 @@ export const ProfileDetailsContainer = styled.div`
 export const ChannelLogo = styled.img`
   height: 30px;
 `
-export const ChannelName = styled.h1`
+export const ChannelName = styled.p`
   font-size: 20px;
   font-weight: 500;
+`
+export const LikeButtonText = styled.p`
+  color: ${props => (props.like === 'true' ? '#2563eb ' : '#64748b')};
+`
+export const DisLikeButtonText = styled.p`
+  color: ${props => (props.disLike === 'true' ? '#2563eb ' : '#64748b')};
+`
+export const SaveButtonText = styled.p`
+  color: ${props => (props.save === 'true' ? '#2563eb ' : '#64748b')};
 `

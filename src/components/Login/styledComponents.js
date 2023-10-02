@@ -5,6 +5,10 @@ export const LoginContainer = styled.div`
   flex-direction: row;
   justify-content: center;
   align-items: center;
+  height: 100vh;
+
+  background-color: ${props => (props.dark === 'true' ? '#101010' : '#f9f9f9')};
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#101010')};
 `
 export const ResponsiveContainer = styled.div`
   display: flex;
@@ -14,8 +18,14 @@ export const ResponsiveContainer = styled.div`
   width: 50vh;
   height: 45vh;
   margin-top: 30vh;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  box-shadow: ${props =>
+    props.dark === 'true'
+      ? '0 0 40px rgba(200, 200, 200, 0.5)'
+      : '0 0 40px rgba(0,0,0,0.5)'};
+  background-color: ${props => (props.dark === 'true' ? '#101010' : '#f9f9f9')};
   padding: 20px;
+
+  margin-top: 10px;
 `
 export const LogoImage = styled.img`
   height: 60px;

@@ -1,5 +1,5 @@
 import {Component} from 'react'
-import {Switch, Route} from 'react-router-dom'
+import {Switch, Route, Redirect} from 'react-router-dom'
 
 import NxtWatchContext from './context/NxtWatchContext'
 
@@ -12,22 +12,45 @@ import Trending from './components/Trending'
 import Gaming from './components/Gaming'
 import SavedVideos from './components/SavedVideos'
 import VideoItemDetails from './components/VideoItemDetails'
-
 import Login from './components/Login'
+import NotFound from './components/NotFound'
 
 class App extends Component {
-  state = {save: false, isDarkTheme: false}
+  state = {isDark: false, savedVideos: []}
 
-  onToggleSave = () => {}
+  onToggleSave = video => {
+    const {savedVideos} = this.state
+
+    const findVideo = savedVideos.find(each => each.id === video.id)
+
+    if (findVideo === undefined) {
+      this.setState(prev => ({
+        savedVideos: [...prev.savedVideos, video],
+      }))
+    } else if (findVideo !== undefined) {
+      const filter = savedVideos.filter(each => each.id !== video.id)
+
+      this.setState({
+        savedVideos: filter,
+      })
+    }
+  }
+
+  toggleTheme = () => {
+    this.setState(prev => ({
+      isDark: !prev.isDark,
+    }))
+  }
 
   render() {
-    const {save, isDarkTheme} = this.state
+    const {isDark, savedVideos} = this.state
     return (
       <NxtWatchContext.Provider
         value={{
-          save,
-          isDarkTheme,
-          toggleSave: this.onToggleSave(),
+          isDark,
+          savedVideos,
+          toggleTheme: this.toggleTheme,
+          toggleSave: this.onToggleSave,
         }}
       >
         <Switch>
@@ -41,6 +64,8 @@ class App extends Component {
             path="/videos/:id"
             component={VideoItemDetails}
           />
+          <Route exact path="/not-found" component={NotFound} />
+          <Redirect to="/not-found" />
         </Switch>
       </NxtWatchContext.Provider>
     )

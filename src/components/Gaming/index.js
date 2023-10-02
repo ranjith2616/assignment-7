@@ -6,6 +6,8 @@ import Header from '../Header'
 import Sidebar from '../Sidebar'
 import GameDetailedVideoItem from '../GameDetailedVideoItem'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   GameContainer,
   ResponsiveContainer,
@@ -64,18 +66,29 @@ class Gaming extends Component {
     const {data} = this.state
 
     return (
-      <div>
-        <GamingBannerCard data-testid="gaming">
-          <BannerIcon />
-          <GamingBannerHeading> Gaming</GamingBannerHeading>
-        </GamingBannerCard>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDark} = value
 
-        <GamingDetailedListContainer>
-          {data.map(each => (
-            <GameDetailedVideoItem key={each.id} videosDetails={each} />
-          ))}
-        </GamingDetailedListContainer>
-      </div>
+          return (
+            <div>
+              <GamingBannerCard data-testid="banner" dark={isDark.toString()}>
+                <BannerIcon />
+                <GamingBannerHeading dark={isDark.toString()}>
+                  {' '}
+                  Gaming
+                </GamingBannerHeading>
+              </GamingBannerCard>
+
+              <GamingDetailedListContainer>
+                {data.map(each => (
+                  <GameDetailedVideoItem key={each.id} videosDetails={each} />
+                ))}
+              </GamingDetailedListContainer>
+            </div>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
@@ -84,27 +97,53 @@ class Gaming extends Component {
   }
 
   renderFailureView = () => (
-    <div>
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure view"
-      />
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
 
-      <h1> Oops! Something Went Wrong</h1>
-      <p>
-        We are having some trouble to complete your request. Please try again.
-      </p>
-      <button type="button" onClick={this.onRetryButton}>
-        {' '}
-        Retry
-      </button>
-    </div>
+        return (
+          <div>
+            <img
+              src={
+                isDark
+                  ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+                  : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+              }
+              alt="failure view"
+            />
+
+            <h1> Oops! Something Went Wrong</h1>
+            <p>
+              We are having some trouble to complete your request. Please try
+              again.
+            </p>
+            <button type="button" onClick={this.onRetryButton}>
+              {' '}
+              Retry
+            </button>
+          </div>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   renderInProgress = () => (
-    <LoadingContainer data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </LoadingContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
+
+        return (
+          <LoadingContainer data-testid="loader">
+            <Loader
+              type="ThreeDots"
+              color={isDark ? '#ffffff' : '#101010'}
+              height="50"
+              width="50"
+            />
+          </LoadingContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   renderGamingRoute = () => {
@@ -128,9 +167,20 @@ class Gaming extends Component {
         <Header />
         <GameContainer>
           <Sidebar />
-          <ResponsiveContainer data-testid="gaming">
-            {this.renderGamingRoute()}
-          </ResponsiveContainer>
+          <NxtWatchContext.Consumer>
+            {value => {
+              const {isDark} = value
+
+              return (
+                <ResponsiveContainer
+                  data-testid="gaming"
+                  dark={isDark.toString()}
+                >
+                  {this.renderGamingRoute()}
+                </ResponsiveContainer>
+              )
+            }}
+          </NxtWatchContext.Consumer>
         </GameContainer>
       </>
     )

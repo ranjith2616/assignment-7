@@ -6,7 +6,7 @@ export const GameContainer = styled.div`
   display: flex;
 `
 export const ResponsiveContainer = styled.div`
-  background-color: #f1f5f9;
+  background-color: ${props => (props.dark === 'true' ? '#0f0f0f' : '#f9f9f9')};
   height: 100vh;
   overflow: auto;
   background-size: cover;
@@ -30,8 +30,8 @@ export const LoadingContainer = styled.div`
 export const GamingBannerCard = styled.div`
   display: flex;
   align-items: center;
-  background-color: #f1f1f1;
-  height: 60px;
+  background-color: ${props => (props.dark === 'true' ? '#181818' : '#f1f1f1')};
+  height: 70px;
   padding: 10px;
 `
 export const BannerIcon = styled(SiYoutubegaming)`
@@ -40,4 +40,5 @@ export const BannerIcon = styled(SiYoutubegaming)`
 `
 export const GamingBannerHeading = styled.h1`
   padding-left: 10px;
+  color: ${props => (props.dark === 'true' ? '#fff' : '#000')};
 `

@@ -6,6 +6,8 @@ import Header from '../Header'
 import Sidebar from '../Sidebar'
 import TrendingDetailedItem from '../TrendingDetailedItem'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   TrendingContainer,
   ResponsiveContainer,
@@ -70,24 +72,51 @@ class Trending extends Component {
     const {data} = this.state
 
     return (
-      <div>
-        <TrendBannerCard data-testid="banner">
-          <TrendIcon />
-          <TrendingHeading> Trending</TrendingHeading>
-        </TrendBannerCard>
-        <TrendingVideosListContainer>
-          {data.map(each => (
-            <TrendingDetailedItem key={each.id} trendingDetails={each} />
-          ))}
-        </TrendingVideosListContainer>
-      </div>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDark} = value
+
+          return (
+            <div>
+              <TrendBannerCard data-testid="banner" dark={isDark.toString()}>
+                <TrendIcon />
+                <TrendingHeading dark={isDark.toString()}>
+                  {' '}
+                  Trending
+                </TrendingHeading>
+              </TrendBannerCard>
+              <TrendingVideosListContainer>
+                {data.map(each => (
+                  <TrendingDetailedItem key={each.id} trendingDetails={each} />
+                ))}
+                <ul>.</ul>
+                <li>.</li>
+                <li>.</li>
+              </TrendingVideosListContainer>
+            </div>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
   renderInprogressView = () => (
-    <LoadingContainer className="loader-container" data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </LoadingContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
+
+        return (
+          <LoadingContainer data-testid="loader">
+            <Loader
+              type="ThreeDots"
+              color={isDark ? '#ffffff' : '#101010'}
+              height="50"
+              width="50"
+            />
+          </LoadingContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   onRetryButton = () => {
@@ -95,21 +124,34 @@ class Trending extends Component {
   }
 
   renderFailureView = () => (
-    <div>
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure view"
-      />
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
 
-      <h1> Oops! Something Went Wrong</h1>
-      <p>
-        We are having some trouble to complete your request. Please try again.
-      </p>
-      <button type="button" onClick={this.onRetryButton}>
-        {' '}
-        Retry
-      </button>
-    </div>
+        return (
+          <div>
+            <img
+              src={
+                isDark
+                  ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+                  : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+              }
+              alt="failure view"
+            />
+
+            <h1> Oops! Something Went Wrong</h1>
+            <p>
+              We are having some trouble to complete your request. Please try
+              again.
+            </p>
+            <button type="button" onClick={this.onRetryButton}>
+              {' '}
+              Retry
+            </button>
+          </div>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   renderTrendingRoute = () => {
@@ -133,9 +175,20 @@ class Trending extends Component {
         <Header />
         <TrendingContainer>
           <Sidebar />
-          <ResponsiveContainer data-testid="trending">
-            {this.renderTrendingRoute()}
-          </ResponsiveContainer>
+          <NxtWatchContext.Consumer>
+            {value => {
+              const {isDark} = value
+
+              return (
+                <ResponsiveContainer
+                  data-testid="trending"
+                  dark={isDark.toString()}
+                >
+                  {this.renderTrendingRoute()}
+                </ResponsiveContainer>
+              )
+            }}
+          </NxtWatchContext.Consumer>
         </TrendingContainer>
       </>
     )

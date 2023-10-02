@@ -1,5 +1,7 @@
 import {formatDistanceToNow} from 'date-fns'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   LinkDetailedVideo,
   ThumbnailImage,
@@ -25,28 +27,36 @@ const HomeDetailedVideoItem = props => {
   const published = formatDistanceToNow(new Date(publishedAt))
 
   return (
-    <LinkDetailedVideo to={`/videos/${id}`}>
-      <li>
-        <ThumbnailImage src={thumbnailUrl} alt="video thumbnail" />
-        <VideoDetailsContainer>
-          <ChanelLogo src={profileImageUrl} alt="channel logo" />
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
 
-          <div>
-            <VideoHeading> {title}</VideoHeading>
-            <p> {channelName}</p>
+        return (
+          <LinkDetailedVideo to={`/videos/${id}`} dark={isDark.toString()}>
+            <li>
+              <ThumbnailImage src={thumbnailUrl} alt="video thumbnail" />
+              <VideoDetailsContainer>
+                <ChanelLogo src={profileImageUrl} alt="channel logo" />
 
-            <ViewsCard>
-              <p> {viewsCount}</p>
-              <p>
-                {' '}
-                <DotIcon />
-                {published}
-              </p>
-            </ViewsCard>
-          </div>
-        </VideoDetailsContainer>
-      </li>
-    </LinkDetailedVideo>
+                <div>
+                  <VideoHeading> {title}</VideoHeading>
+                  <p> {channelName}</p>
+
+                  <ViewsCard>
+                    <p> {viewsCount}</p>
+                    <p>
+                      {' '}
+                      <DotIcon />
+                      {published}
+                    </p>
+                  </ViewsCard>
+                </div>
+              </VideoDetailsContainer>
+            </li>
+          </LinkDetailedVideo>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 }
 

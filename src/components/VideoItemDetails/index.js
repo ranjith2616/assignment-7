@@ -5,6 +5,8 @@ import Cookies from 'js-cookie'
 
 import VideoItem from '../VideoItem'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   VideoItemDetailsContainer,
   ResponsiveContainer,
@@ -26,6 +28,9 @@ class VideoItemDetails extends Component {
   state = {
     videoData: [],
     apiStatus: apiStatusConst.initial,
+    like: false,
+    disLike: false,
+    save: false,
   }
 
   componentDidMount() {
@@ -75,20 +80,73 @@ class VideoItemDetails extends Component {
     this.getVideoDetails()
   }
 
+  onLikeButton = () => {
+    const {like} = this.state
+
+    if (like === true) {
+      this.setState({like: false})
+    } else {
+      this.setState({
+        like: true,
+        disLike: false,
+      })
+    }
+  }
+
+  onDisLikeButton = () => {
+    const {disLike} = this.state
+
+    if (disLike === true) {
+      this.setState({disLike: false})
+    } else {
+      this.setState({
+        like: false,
+        disLike: true,
+      })
+    }
+  }
+
+  onSaveButton = () => {
+    this.setState(prev => ({
+      save: !prev.save,
+    }))
+  }
+
   renderSuccessView = () => {
-    const {videoData} = this.state
+    const {videoData, like, disLike, save} = this.state
 
     return (
       <>
-        <VideoItem videoDetails={videoData} />
+        <VideoItem
+          like={like}
+          disLike={disLike}
+          save={save}
+          videoDetails={videoData}
+          onLikeButton={this.onLikeButton}
+          onDisLikeButton={this.onDisLikeButton}
+          onSaveButton={this.onSaveButton}
+        />
       </>
     )
   }
 
   renderInProgressView = () => (
-    <LoadingContainer data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </LoadingContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
+
+        return (
+          <LoadingContainer data-testid="loader">
+            <Loader
+              type="ThreeDots"
+              color={isDark ? '#ffffff' : '#101010'}
+              height="50"
+              width="50"
+            />
+          </LoadingContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   renderFailureView = () => (
@@ -130,9 +188,19 @@ class VideoItemDetails extends Component {
         <Header />
         <VideoItemDetailsContainer>
           <Sidebar />
-          <ResponsiveContainer data-testid="videoItemDetails">
-            {this.renderVideoItemDetailRoute()}
-          </ResponsiveContainer>
+          <NxtWatchContext.Consumer>
+            {value => {
+              const {isDark} = value
+              return (
+                <ResponsiveContainer
+                  data-testid="videoItemDetails"
+                  dark={isDark.toString()}
+                >
+                  {this.renderVideoItemDetailRoute()}
+                </ResponsiveContainer>
+              )
+            }}
+          </NxtWatchContext.Consumer>
         </VideoItemDetailsContainer>
       </>
     )

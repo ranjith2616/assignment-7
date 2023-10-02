@@ -10,7 +10,7 @@ import {RiMenuAddFill} from 'react-icons/ri'
 
 export const SidebarContainer = styled.div`
   width: 40vh;
-  height: 88vh;
+  height: 100vh;
   margin-right: auto;
   display: flex;
   flex-direction: column;
@@ -19,6 +19,9 @@ export const SidebarContainer = styled.div`
   @media screen and (max-width: 767px) {
     display: none;
   }
+
+  background-color: ${props => (props.dark === 'true' ? '#212121' : '#f9f9f9')};
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#181818')};
 `
 export const RouteLink = styled(Link)`
   text-decoration: none;
@@ -28,9 +31,7 @@ export const RouteLink = styled(Link)`
 
   padding-left: 20px;
   padding-top: 8px;
-
-  background-color: ${props => (props.home ? 'red' : null)};
-  background-color: ${props => (props.trending ? 'red' : null)};
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#181818')};
 `
 
 export const LinkContainer = styled.div`
@@ -51,9 +52,10 @@ export const SaveIcon = styled(RiMenuAddFill)``
 export const ContactUsContainer = styled.div`
   padding: 10px;
 `
-export const ContactUsHeading = styled.h1`
+export const ContactUsHeading = styled.p`
   font-size: 16px;
-  color: #1e293b;
+
+  color: ${props => (props.dark === 'true' ? '#ffffff' : '#1e293b')};
 `
 export const CompanyLogoImages = styled.img`
   height: 35px;

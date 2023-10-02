@@ -1,5 +1,7 @@
 import {formatDistanceToNow} from 'date-fns'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   LinkTrendingContainer,
   ThumbnailImage,
@@ -20,18 +22,26 @@ const TrendingDetailedItem = props => {
   const published = formatDistanceToNow(new Date(publishedAt))
 
   return (
-    <LinkTrendingContainer to={`/videos/${id}`}>
-      <ThumbnailImage src={thumbnailUrl} alt="video thumbnail" />
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
 
-      <div>
-        <TitleHeading> {title}</TitleHeading>
-        <p> {channelName}</p>
-        <div>
-          <p> {viewsCount}</p>
-          <p> {published}</p>
-        </div>
-      </div>
-    </LinkTrendingContainer>
+        return (
+          <LinkTrendingContainer to={`/videos/${id}`} dark={isDark.toString()}>
+            <ThumbnailImage src={thumbnailUrl} alt="video thumbnail" />
+
+            <div>
+              <TitleHeading> {title}</TitleHeading>
+              <p> {channelName}</p>
+              <div>
+                <p> {viewsCount}</p>
+                <p> {published}</p>
+              </div>
+            </div>
+          </LinkTrendingContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 }
 

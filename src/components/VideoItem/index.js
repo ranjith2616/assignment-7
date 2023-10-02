@@ -17,14 +17,25 @@ import {
   ProfileDetailsContainer,
   ChannelLogo,
   ChannelName,
+  LikeButtonText,
+  DisLikeButtonText,
+  SaveButtonText,
 } from './styledComponents'
 
 const VideoItem = props => (
   <NxtWatchContext.Consumer>
     {value => {
-      const {toggleSave} = value
+      const {isDark, toggleSave} = value
 
-      const {videoDetails} = props
+      const {
+        videoDetails,
+        like,
+        disLike,
+        save,
+        onSaveButton,
+        onLikeButton,
+        onDisLikeButton,
+      } = props
       const {
         title,
         description,
@@ -38,14 +49,28 @@ const VideoItem = props => (
 
       const publishingAt = formatDistanceToNow(new Date(publishedAt))
 
+      const onLikeBtn = () => {
+        onLikeButton()
+      }
+
+      const onDisLikeBtn = () => {
+        onDisLikeButton()
+      }
+
       const onSaveBtn = () => {
-        toggleSave()
+        onSaveButton()
+        toggleSave(videoDetails)
       }
 
       return (
-        <VideoItemContainer>
+        <VideoItemContainer dark={isDark.toString()}>
           <div>
-            <ResponsivePlayer url={videoUrl} controls />
+            <ResponsivePlayer
+              url={videoUrl}
+              height="50vh"
+              width="100%"
+              controls
+            />
           </div>
 
           <VideoTitleHeading> {title}</VideoTitleHeading>
@@ -57,16 +82,36 @@ const VideoItem = props => (
             </ViewsCountCard>
 
             <IconContainer>
-              <IconButton type="button">
-                <LikeIcon /> Like
+              <IconButton
+                type="button"
+                dark={isDark.toString()}
+                onClick={onLikeBtn}
+              >
+                <LikeButtonText like={like.toString()}>
+                  {' '}
+                  <LikeIcon /> Like
+                </LikeButtonText>
               </IconButton>
-              <IconButton type="button">
+              <IconButton
+                type="button"
+                dark={isDark.toString()}
+                onClick={onDisLikeBtn}
+              >
                 {' '}
-                <DisLikeIcon /> Dislike
+                <DisLikeButtonText disLike={disLike.toString()}>
+                  {' '}
+                  <DisLikeIcon /> Dislike
+                </DisLikeButtonText>
               </IconButton>
 
-              <IconButton type="button" onClick={onSaveBtn}>
-                <SaveIcon /> Save
+              <IconButton
+                type="button"
+                dark={isDark.toString()}
+                onClick={onSaveBtn}
+              >
+                <SaveButtonText save={save.toString()}>
+                  <SaveIcon /> {save ? 'Saved' : 'Save'}
+                </SaveButtonText>
               </IconButton>
             </IconContainer>
           </ViewsAndIconContainer>

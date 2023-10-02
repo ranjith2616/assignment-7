@@ -82,7 +82,7 @@ class Home extends Component {
   }
 
   renderBannerSection = () => (
-    <BannerContainer>
+    <BannerContainer data-testid="banner">
       <BannerTopCard>
         <WebsiteLogoImg
           src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
@@ -97,7 +97,7 @@ class Home extends Component {
         </BannerCloseButton>
       </BannerTopCard>
 
-      <h1> Buy Nxt Watch Premium prepaid plans with UPI</h1>
+      <p> Buy Nxt Watch Premium in the banner</p>
       <button type="button"> GET IT NOW</button>
     </BannerContainer>
   )
@@ -116,52 +116,84 @@ class Home extends Component {
     const noVideos = data.length === 0
 
     return (
-      <div>
-        {noVideos ? (
-          <NoVideosContainer>
-            <NoVideosImage
-              src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
-              alt="no videos"
-            />
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDark} = value
 
-            <h1> No Search results found</h1>
-            <p> Try different key words or remove search fitter</p>
-            <button type="button" onClick={this.onRetryButton}>
-              {' '}
-              Retry
-            </button>
-          </NoVideosContainer>
-        ) : (
-          <div>
-            <SearchInputContainer>
-              <SearchInput
-                type="search"
-                placeholder="Search"
-                onChange={this.onSearchInput}
-              />
-              <SearchButton type="button" onClick={this.onSearchButton}>
-                {' '}
-                <SearchIcon />
-              </SearchButton>
-            </SearchInputContainer>
-
+          return (
             <div>
-              <DetailedVideoContainer>
-                {data.map(each => (
-                  <HomeDetailedVideoItem key={each.id} videoDetails={each} />
-                ))}
-              </DetailedVideoContainer>
+              {noVideos ? (
+                <NoVideosContainer>
+                  <NoVideosImage
+                    src="https://assets.ccbp.in/frontend/react-js/nxt-watch-no-search-results-img.png"
+                    alt="no videos"
+                  />
+
+                  <h1> No Search results found</h1>
+                  <p> Try different key words or remove search filter</p>
+
+                  <button type="button" onClick={this.onRetryButton}>
+                    {' '}
+                    Retry
+                  </button>
+                </NoVideosContainer>
+              ) : (
+                <div>
+                  <SearchInputContainer>
+                    <SearchInput
+                      type="search"
+                      placeholder="Search"
+                      onChange={this.onSearchInput}
+                    />
+                    <SearchButton
+                      data-testid="searchButton"
+                      type="button"
+                      onClick={this.onSearchButton}
+                    >
+                      {' '}
+                      <SearchIcon />
+                    </SearchButton>
+                  </SearchInputContainer>
+
+                  <div>
+                    <DetailedVideoContainer dark={isDark.toString()}>
+                      {data.map(each => (
+                        <HomeDetailedVideoItem
+                          key={each.id}
+                          videoDetails={each}
+                        />
+                      ))}
+                    </DetailedVideoContainer>
+                    <ul>
+                      <li>.</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </div>
-          </div>
-        )}
-      </div>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 
   renderInprogressView = () => (
-    <LoadingContainer data-testid="loader">
-      <Loader type="ThreeDots" color="#ffffff" height="50" width="50" />
-    </LoadingContainer>
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
+
+        return (
+          <LoadingContainer data-testid="loader">
+            <Loader
+              type="ThreeDots"
+              color={isDark ? '#ffffff' : '#101010'}
+              height="50"
+              width="50"
+            />
+          </LoadingContainer>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   onRetryButton = () => {
@@ -169,21 +201,34 @@ class Home extends Component {
   }
 
   renderFailureView = () => (
-    <div>
-      <img
-        src="https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png"
-        alt="failure view"
-      />
+    <NxtWatchContext.Consumer>
+      {value => {
+        const {isDark} = value
 
-      <h1> Oops! Something Went Wrong</h1>
-      <p>
-        We are having some trouble to complete your request. Please try again.
-      </p>
-      <button type="button" onClick={this.onRetryButton}>
-        {' '}
-        Retry
-      </button>
-    </div>
+        return (
+          <div>
+            <img
+              src={
+                isDark
+                  ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-dark-theme-img.png'
+                  : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-failure-view-light-theme-img.png'
+              }
+              alt="failure view"
+            />
+
+            <h1> Oops! Something Went Wrong</h1>
+            <p>
+              We are having some trouble to complete your request. Please try
+              again.
+            </p>
+            <button type="button" onClick={this.onRetryButton}>
+              {' '}
+              Retry
+            </button>
+          </div>
+        )
+      }}
+    </NxtWatchContext.Consumer>
   )
 
   renderHomeRoute = () => {
@@ -208,11 +253,22 @@ class Home extends Component {
         <Header />
         <HomeContainer>
           <Sidebar />
-          <ResponsiveContainer data-testid="home">
-            {showBanner && this.renderBannerSection()}
+          <NxtWatchContext.Consumer>
+            {value => {
+              const {isDark} = value
 
-            {this.renderHomeRoute()}
-          </ResponsiveContainer>
+              return (
+                <ResponsiveContainer
+                  data-testid="home"
+                  dark={isDark.toString()}
+                >
+                  {showBanner && this.renderBannerSection()}
+
+                  {this.renderHomeRoute()}
+                </ResponsiveContainer>
+              )
+            }}
+          </NxtWatchContext.Consumer>
         </HomeContainer>
       </>
     )

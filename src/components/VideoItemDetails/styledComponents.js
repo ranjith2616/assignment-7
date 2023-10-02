@@ -5,8 +5,7 @@ export const VideoItemDetailsContainer = styled.div`
 `
 
 export const ResponsiveContainer = styled.div`
-  background-color: #f9f9f9;
-
+  background-color: ${props => (props.dark === 'true' ? '#0f0f0f' : '#f9f9f9')};
   background-size: cover;
   width: 100%;
   height: 100vh;

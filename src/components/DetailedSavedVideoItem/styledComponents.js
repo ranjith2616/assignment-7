@@ -15,7 +15,7 @@ export const ThumbnailImage = styled.img`
   height: 30vh;
   padding-right: 10px;
 `
-export const TitleHeading = styled.p`
+export const TitleHeading = styled.h1`
   font-size: 20px;
   font-weight: 500;
 `

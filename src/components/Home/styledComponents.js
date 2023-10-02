@@ -6,16 +6,18 @@ export const HomeContainer = styled.div`
   display: flex;
 `
 export const ResponsiveContainer = styled.div`
-  background-color: ${props => (props.isDarkTheme ? '#181818' : '#f9f9f9')};
   background-size: cover;
   width: 100%;
   height: 100vh;
   overflow: auto;
+
+  background-color: ${props => (props.dark === 'true' ? '#181818' : '#f9f9f9')};
 `
 export const BannerContainer = styled.div`
   background-image: url('https://assets.ccbp.in/frontend/react-js/nxt-watch-banner-bg.png');
   height: 30vh;
   background-size: cover;
+  padding: 10px;
 `
 export const BannerCancelIcon = styled(AiOutlineClose)``
 
@@ -36,27 +38,42 @@ export const BannerCloseButton = styled.button`
 `
 export const SearchInputContainer = styled.div`
   border: 2px solid #c0bdbf;
-  border-radius: 5px;
-  padding: 2px;
+  border-radius: 3px;
+
   display: flex;
   align-items: center;
+  justify-content: space-between;
 
-  width: 40vh;
+  width: 60vh;
   margin: 10px;
+  background-color: #ffffff;
+
+  @media screen and (max-width: 767px) {
+    width: 90%;
+  }
 `
 export const SearchInput = styled.input`
-  width: 30vh;
-  height: 30px;
-  margin-right: 20px;
+  width: 50vh;
+  height: 28px;
   border: 0;
+  font-family: 'Roboto';
+  background: transparent;
   outline: none;
 `
 export const SearchIcon = styled(AiOutlineSearch)`
-  font-size: 30px;
+  font-size: 40px;
+
+  width: 60px;
+  padding: 10px;
 `
 export const SearchButton = styled.button`
-  border: 0;
-  background: transparent;
+  border-left: 2px solid #c0bdbf;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
+  background: #c0bdbf;
+  cursor: pointer;
+  outline: none;
 `
 export const DetailedVideoContainer = styled.div`
   list-style-type: none;

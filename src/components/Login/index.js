@@ -2,6 +2,8 @@ import {Component} from 'react'
 import {Redirect} from 'react-router-dom'
 import Cookies from 'js-cookie'
 
+import NxtWatchContext from '../../context/NxtWatchContext'
+
 import {
   LoginContainer,
   ResponsiveContainer,
@@ -20,7 +22,6 @@ class Login extends Component {
     username: '',
     password: '',
     showPassword: false,
-    visiblePass: '',
     errorMsg: '',
   }
 
@@ -63,71 +64,76 @@ class Login extends Component {
   }
 
   onChangeShowPassword = () => {
-    const {password} = this.state
     this.setState(prev => ({showPassword: !prev.showPassword}))
-
-    this.setState({visiblePass: password})
-  }
-
-  renderFormContainer = () => {
-    const {username, password, showPassword, visiblePass, errorMsg} = this.state
-
-    return (
-      <FormContainer onSubmit={this.onFormSubmit}>
-        <LogoImage
-          src="https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png"
-          alt="website logo"
-        />
-
-        <InputContainer>
-          <label htmlFor="username"> USERNAME</label>
-          <Input
-            id="username"
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={this.onChangeUsername}
-          />
-        </InputContainer>
-
-        <InputContainer>
-          <label htmlFor="password"> PASSWORD</label>
-          <Input
-            id="password"
-            type={showPassword ? 'text' : 'password'}
-            placeholder="Password"
-            value={showPassword ? visiblePass : password}
-            onChange={this.onChangePassword}
-          />
-        </InputContainer>
-
-        <LoginButton type="submit"> Login</LoginButton>
-        <ErrorMsg>{errorMsg}</ErrorMsg>
-
-        <ShowPasswordCard>
-          <input
-            type="checkbox"
-            id="showPassword"
-            value={showPassword}
-            onChange={this.onChangeShowPassword}
-          />
-          <ShowPasswordLabel htmlFor="showPassword">
-            Show Password
-          </ShowPasswordLabel>
-        </ShowPasswordCard>
-      </FormContainer>
-    )
   }
 
   render() {
+    const {username, password, showPassword, errorMsg} = this.state
     const token = Cookies.get('jwt_token')
     if (token !== undefined) {
       return <Redirect to="/" />
     }
+
     return (
-      <LoginContainer>
-        <ResponsiveContainer>{this.renderFormContainer()}</ResponsiveContainer>
-      </LoginContainer>
+      <NxtWatchContext.Consumer>
+        {value => {
+          const {isDark} = value
+
+          return (
+            <LoginContainer dark={isDark.toString()}>
+              <ResponsiveContainer dark={isDark.toString()}>
+                <FormContainer onSubmit={this.onFormSubmit}>
+                  <LogoImage
+                    src={
+                      isDark
+                        ? 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-dark-theme-img.png'
+                        : 'https://assets.ccbp.in/frontend/react-js/nxt-watch-logo-light-theme-img.png'
+                    }
+                    alt="website logo"
+                  />
+
+                  <InputContainer>
+                    <label htmlFor="username"> USERNAME</label>
+                    <Input
+                      id="username"
+                      type="text"
+                      placeholder="Username"
+                      value={username}
+                      onChange={this.onChangeUsername}
+                    />
+                  </InputContainer>
+
+                  <InputContainer>
+                    <label htmlFor="password"> PASSWORD</label>
+                    <Input
+                      id="password"
+                      type={showPassword ? 'text' : 'password'}
+                      placeholder="Password"
+                      value={password}
+                      onChange={this.onChangePassword}
+                    />
+                  </InputContainer>
+
+                  <LoginButton type="submit"> Login</LoginButton>
+                  <ErrorMsg>{errorMsg}</ErrorMsg>
+
+                  <ShowPasswordCard>
+                    <input
+                      type="checkbox"
+                      id="showPassword"
+                      value={showPassword}
+                      onChange={this.onChangeShowPassword}
+                    />
+                    <ShowPasswordLabel htmlFor="showPassword">
+                      Show Password
+                    </ShowPasswordLabel>
+                  </ShowPasswordCard>
+                </FormContainer>
+              </ResponsiveContainer>
+            </LoginContainer>
+          )
+        }}
+      </NxtWatchContext.Consumer>
     )
   }
 }
